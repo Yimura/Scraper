@@ -24,7 +24,7 @@ exports.getUploadDate = function(vRender) {
 }
 
 exports.getViews = function(vRender) {
-    return parseInt(vRender.viewCountText.simpleText || "0");
+    return parseInt(vRender.viewCountText.simpleText.replace(/[^0-9]/g, ''));
 }
 
 exports.idToThumbnail = function(id) {
