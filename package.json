@@ -1,5 +1,5 @@
 {
-  "name": "@yimura/scrape-youtube",
+  "name": "@yimura/scraper",
   "version": "0.1.0",
   "description": "A YouTube scraper that uses minimal dependencies",
   "main": "index.js",
