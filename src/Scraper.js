@@ -60,12 +60,16 @@ class Scraper {
             webPage.split('// scraper_data_begin')[1].trim()
             // Split at the end of our data
             .split('// scraper_data_end')[0].trim()
-            // Remove the last character
+            // Remove the last ";" character
             .slice(0, -1)
             // Remove the variable at the start of our data
             .slice('var ytInitialData = '.length);
 
-        return JSON.parse(data);
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            throw new Error('Failed to parse YouTube search data. YouTube might have updated their site or no results returned.');
+        }
     }
 
     /**
@@ -80,6 +84,9 @@ class Scraper {
         return res.text();
     }
 
+    /**
+     * @param {string} query The string to search for on youtube
+     */
     async search(query) {
         const webPage = await this._fetch(query);
         const parsedJson = this._getSearchData(webPage);
