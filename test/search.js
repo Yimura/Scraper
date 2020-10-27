@@ -1,3 +1,4 @@
+"use strict"
 const Scraper = require('../index.js').default;
 
 const youtube = new Scraper();

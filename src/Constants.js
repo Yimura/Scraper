@@ -1,3 +1,4 @@
+"use strict"
 const searchType = {
     ANY: 'CAA%253D',
     CHANNEL: 'EgIQAg%253D%253D',

@@ -1,3 +1,4 @@
+"use strict"
 exports.compress = function(key) {
     return (key && key['runs'] ? key['runs'].map((v) => v.text) : []).join('');
 }
