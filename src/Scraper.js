@@ -93,5 +93,12 @@ class Scraper {
 
         return this._extractData(parsedJson);
     }
+
+    /**
+     * @param {string} query The string to search for on youtube
+     */
+    async searchOne(query) {
+        return (await this.search(query))[0];
+    }
 }
 module.exports = Scraper;
