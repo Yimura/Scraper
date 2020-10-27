@@ -1,5 +1,5 @@
 "use strict"
-const fetch = require('node-fetch');
+const https = require('https');
 const { BaseParams, YouTubeURL } = require('./Constants.js');
 const Util = require('./Util.js');
 
@@ -77,11 +77,21 @@ class Scraper {
      * @param {string} search_query
      * @returns {string} The entire YouTube webpage as a string
      */
-    async _fetch(search_query) {
+    _fetch(search_query) {
         YouTubeURL.search = new URLSearchParams(this._assign(BaseParams, { search_query }));
 
-        const res = await fetch(YouTubeURL);
-        return res.text();
+        return new Promise((resolve, reject) => {
+            https.get(YouTubeURL, res => {
+                res.setEncoding('utf8');
+
+                let data = '';
+
+                res.on('data', chunk => {
+                    data += chunk;
+                });
+                res.on('end', () => resolve(data));
+            }).on('error', reject);
+        });
     }
 
     /**

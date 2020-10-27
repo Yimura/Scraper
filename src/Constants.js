@@ -10,4 +10,4 @@ const searchType = {
 
 exports.BaseParams = { sp: searchType['VIDEO'] };
 exports.SearchType = searchType;
-exports.YouTubeURL = new URL('https://youtube.com/results');
+exports.YouTubeURL = new URL('https://www.youtube.com/results');
