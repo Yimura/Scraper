@@ -3,7 +3,7 @@ A YouTube scraper that uses minimal dependencies.
 
 ## Why use this scraper?
 
-This scraper only uses 0 external dependencies and only uses the https package from NodeJS.
+This scraper only uses the HTTPS package from NodeJS, no other dependencies required.
 
 In general this scraper will perform up to several 100 milliseconds better than others, from testing "node-fetch" vs "https" we could already denote a difference of 300ms on average.
 
