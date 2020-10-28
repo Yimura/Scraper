@@ -1,11 +1,11 @@
 # Scraper
-A YouTube scraper that uses minimal dependencies.
+A YouTube scraper that uses no external packages.
 
 ## Why use this scraper?
 
-This scraper only uses the HTTPS package from NodeJS, no other dependencies required.
+This package only uses/imports one package which is "https which makes it incredibly lightweight.
 
-In general this scraper will perform up to several 100 milliseconds better than others, from testing "node-fetch" vs "https" we could already denote a difference of 300ms on average.
+Aside from that it's so much faster than any other NodeJS YouTube scraper package with requests being easily under 700 milliseconds!
 
 ## Options
 
