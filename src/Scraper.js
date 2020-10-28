@@ -4,7 +4,12 @@ const { BaseParams, YouTubeURL } = require('./Constants.js');
 const Util = require('./Util.js');
 
 class Scraper {
-    constructor() { }
+    /**
+     * @param {string} [language = 'en'] An IANA Language Subtag, see => http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+     */
+    constructor(language = 'en') {
+        this._lang = language;
+    }
 
     /**
      * @private
@@ -75,13 +80,24 @@ class Scraper {
     /**
      * @private
      * @param {string} search_query
+     * @param {string} [requestedLang=null]
      * @returns {string} The entire YouTube webpage as a string
      */
-    _fetch(search_query) {
+    _fetch(search_query, requestedLang = null) {
+        if (requestedLang && typeof requestedLang !== 'string') {
+            throw new TypeError('The request language property was not a string while a valid IANA language subtag is expected.');
+
+            return;
+        }
+
         YouTubeURL.search = new URLSearchParams(this._assign(BaseParams, { search_query }));
 
         return new Promise((resolve, reject) => {
-            https.get(YouTubeURL, res => {
+            https.get(YouTubeURL, {
+                headers: {
+                    'Accept-Language': requestedLang ? requestedLang : this._lang
+                }
+            }, res => {
                 res.setEncoding('utf8');
 
                 let data = '';
@@ -97,18 +113,27 @@ class Scraper {
     /**
      * @param {string} query The string to search for on youtube
      */
-    async search(query) {
-        const webPage = await this._fetch(query);
+    async search(query, options = {}) {
+        const webPage = await this._fetch(query, options.language);
         const parsedJson = this._getSearchData(webPage);
 
-        return this._extractData(parsedJson);
+        const limit = isNaN(options.limit) ? 50 : options.limit;
+
+        return this._extractData(parsedJson).slice(0, limit);
     }
 
     /**
      * @param {string} query The string to search for on youtube
      */
-    async searchOne(query) {
-        return (await this.search(query))[0];
+    async searchOne(query, options) {
+        return (await this.search(query, options))[0];
+    }
+
+    /**
+     * @param {string} [language='en']
+     */
+    setLang(language = 'en') {
+        this._lang = language;
     }
 }
 module.exports = Scraper;
