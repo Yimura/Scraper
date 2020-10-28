@@ -28,7 +28,7 @@ exports.getViews = function(vRender) {
 }
 
 exports.idToThumbnail = function(id) {
-    return 'https://i.ytimg.com/vi/'+ id +'hqdefault.jpg';
+    return 'https://i.ytimg.com/vi/'+ id +'/hqdefault.jpg';
 }
 
 exports.parseDuration = function(vRender) {
