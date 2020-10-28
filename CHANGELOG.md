@@ -9,6 +9,12 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2020-10-28, Version 0.2.1, @Yimura
+
+### Changes
+
+ * Updated README
+
 ## 2020-10-28, Version 0.2.0, @Yimura
 
 ### Changes
