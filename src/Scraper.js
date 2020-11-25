@@ -57,18 +57,15 @@ class Scraper {
     }
 
     /**
+     * @private
      * @param {string} webPage The YouTube webpage with search results
      */
     _getSearchData(webPage) {
-        const data =
-            // Split at the start of our Data
-            webPage.split('// scraper_data_begin')[1].trim()
-            // Split at the end of our data
-            .split('// scraper_data_end')[0].trim()
-            // Remove the last ";" character
-            .slice(0, -1)
-            // Remove the variable at the start of our data
-            .slice('var ytInitialData = '.length);
+        const startString = 'var ytInitialData = ';
+        const start = webPage.indexOf(startString);
+        const end = webPage.indexOf(';', start);
+
+        const data = webPage.substring(start + startString.length, end);
 
         try {
             return JSON.parse(data);
