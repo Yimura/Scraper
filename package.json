@@ -1,6 +1,6 @@
 {
   "name": "@yimura/scraper",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A YouTube scraper that uses minimal dependencies",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,15 @@
   },
   "homepage": "https://github.com/Yimura/Scraper#readme",
   "keywords": [
-    "youtubesearch",
-    "scrape"
+    "yt",
+    "music",
+    "youtube",
+    "scrape",
+    "youtube-scraper",
+    "scrape-youtube",
+    "search",
+    "discord",
+    "bot"
   ],
   "author": "yimura",
   "license": "MIT",
