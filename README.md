@@ -3,7 +3,7 @@ A YouTube scraper that uses no external packages.
 
 ## Why use this scraper?
 
-This package only uses/imports one package which is "https which makes it incredibly lightweight.
+This package only uses/imports one package, "https" with which it can get low latency results.
 
 Aside from that it's so much faster than any other NodeJS YouTube scraper package with requests being easily under 700 milliseconds!
 
