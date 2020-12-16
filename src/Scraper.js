@@ -63,7 +63,7 @@ class Scraper {
     _getSearchData(webPage) {
         const startString = 'var ytInitialData = ';
         const start = webPage.indexOf(startString);
-        const end = webPage.indexOf(';', start);
+        const end = webPage.indexOf(';</script>', start);
 
         const data = webPage.substring(start + startString.length, end);
 
