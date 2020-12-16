@@ -9,6 +9,12 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2020-12-16, Version 0.2.3, @Yimura
+
+### Changes
+
+ * Fixed an edge case were data from YouTube would be incorrectly parsed.
+
 ## 2020-11-25, Version 0.2.2, @Yimura
 
 ### Changes
