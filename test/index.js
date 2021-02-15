@@ -10,17 +10,14 @@ const main = async () => {
     const uploadDate = await Test.language();
     console.log(`Language test returned a value of "${uploadDate}", this should be an upload date in "fr-FR".`);
 
-    const resultCount = await Test.limit();
-    if (resultCount !== 5) {
-        throw new Error('Limit test did not return the expected amount of results.');
-    }
-    console.log('Limit test returned the expected amount of results (5).');
-
     const results = await Test.search();
     console.log(`Normal search returned ${results} results.`);
 
-    const result = await Test.searchOne();
-    console.log(`Single Result Search returned a track from "${result.channel.name}"`);
+    const live = await Test.searchLive();
+    console.log(`Returned ${live.streams.length} live streams.`);
+
+    const playlist = await Test.searchPlaylist();
+    console.log(`Returned ${playlist.playlists.length} playlists.`);
 
     console.log(`
 Finished tests with an average of ${(Date.now() - startTime) / tests}ms over ${tests}.

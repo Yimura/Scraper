@@ -1,14 +1,30 @@
-# Scraper
-A YouTube scraper that uses no external packages.
+# YouTube Scraper
+## Why use this package?
 
-## Why use this scraper?
+It is a YouTube scraper with zero dependencies.
+Everything has been coded to have a minimal footprint creating a small package which also makes very fast.
 
-This package only uses/imports one package, "https" with which it can get low latency results.
+### Timings
 
-Aside from that it's so much faster than any other NodeJS YouTube scraper package with requests being easily under 700 milliseconds!
+These are the timings I would get on average over 20 tests, ofcourse the Fetch time depends on how good your connection is to YouTube and how loaded YouTube is at that point.
+
+| Fetch Time | Processing Time |
+|---|---|
+| 773.918144 ms | 3.117175 ms |
+
+```
+These are results for the VIDEO search type only, these are by far the slowest to fetch.
+Any other type will in general be over 200ms faster.
+```
 
 ## Options
 
+| Property | Default | Description |
+|---|---|---|
+| language | `en` | Set the language that you would like for results to be returned in. A list of supported language types can be found [here](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry). |
+| searchType | `video` | Which type to search for on YouTube, supported types are `any`,`live`, `movie`, `playlist` and `video` |
+
+### Example
 You can set the global language which YouTube should return results in or set the return language per search/request:
 ```js
 import youtube from '@yimura/scraper'
@@ -17,39 +33,29 @@ import youtube from '@yimura/scraper'
 const yt = new youtube.default('fr-FR');
 
 // Sets the language communicated to YouTube to Dutch from Belgium for this search
-const result = yt.search('Never gonna give you up', { language: 'nl-BE' });
-```
-
-As well can you limit the amount of results the package returns to you:
-```js
-import youtube from '@yimura/scraper'
-
-const yt = new youtube.default();
-
-// Returns only 5 results instead of the usual 19
-const result = yt.search('Never gonna give you up', { limit: 5 });
+const results = yt.search('Never gonna give you up', { language: 'nl-BE' });
 ```
 
 ## Example Code
 
-CommonJS:
+**CommonJS:**
 ```js
 const Scraper = require('@yimura/scraper').default;
 
 const youtube = new Scraper();
 
 youtube.search('Never gonna give you up').then(results => {
-    console.log(results[0]);
+    console.log(results.videos[0]);
 });
 ```
 
-ESModule:
+**ESModule:**
 ```js
 import youtube from '@yimura/scraper'
 
 const yt = new youtube.default();
 yt.search('Never gonna give you up').then(results => {
-    console.log(results[0]);
+    console.log(results.videos[0]);
 });
 ```
 
@@ -73,3 +79,63 @@ yt.search('Never gonna give you up').then(results => {
     views: 788551856
 }
 ```
+
+## Return Object Structure
+```js
+{
+    playlists: [
+        {
+            preview: [
+                {
+                    duration: Number,
+                    views: Number,
+                    id: String,
+                    link: String,
+                    thumbnail: String,
+                    title: String,
+                    shareLink: String
+                }
+            ],
+            id: String,
+            link: String,
+            thumbnail: String,
+            title: String,
+            videoCount: Number
+        }
+    ],
+    streams: [
+        {
+            watching: Number,
+            channel: {
+                name: String,
+                link: String,
+                verified: Boolean
+            },
+            id: String,
+            link: String,
+            thumbnail: String,
+            title: String,
+            shareLink: String
+        }
+    ],
+    videos: [
+        {
+            description: String,
+            duration: Number,
+            uploaded: String,
+            views: Number,
+            channel: {
+                name: String,
+                link: String,
+                verified: Boolean
+            },
+            id: String,
+            link: String,
+            thumbnail: String,
+            title: String,
+            shareLink: String
+        }
+    ]
+}
+```
+

@@ -6,15 +6,7 @@ const youtube = new Scraper();
 exports.language = () => {
     return new Promise((resolve, reject) => {
         youtube.search('Never gonna give you up', { language: 'fr-FR' }).then(results => {
-            resolve(results[0].uploaded);
-        });
-    });
-}
-
-exports.limit = () => {
-    return new Promise((resolve, reject) => {
-        youtube.search('Never gonna give you up', { limit: 5 }).then(results => {
-            resolve(results.length);
+            resolve(results.videos[0].uploaded);
         });
     });
 }
@@ -22,15 +14,23 @@ exports.limit = () => {
 exports.search = () => {
     return new Promise((resolve, reject) => {
         youtube.search('Never gonna give you up').then(results => {
-            resolve(results.length);
+            resolve(results.videos.length);
         });
     });
 };
 
-exports.searchOne = () => {
+exports.searchLive = () => {
     return new Promise((resolve, reject) => {
-        youtube.searchOne('Never gonna give you up').then(results => {
-            resolve(results);
-        });
+        youtube.search('NCS', {
+            searchType: 'live'
+        }).then(resolve);
+    });
+}
+
+exports.searchPlaylist = () => {
+    return new Promise((resolve, reject) => {
+        youtube.search('NCS', {
+            searchType: 'playlist'
+        }).then(resolve);
     });
 }

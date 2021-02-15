@@ -9,6 +9,21 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2021-02-15, Version 1.0.0, @Yimura
+
+### Changes
+
+ * Updated Constants with pre-decoded SearchTypes, this to prevent problems where URLSearchParams would encode the value again.
+ * The Constants are accessible and export in the index if you needed these for some reason.
+ * YT Scraper has been updated and support has been added for the following search types:
+   * any
+   * live
+   * movie
+   * playlist
+   * video
+ * Tests have been updated for the new functionalities
+ * README includes an entire response object of possible results
+
 ## 2020-12-16, Version 0.2.3, @Yimura
 
 ### Changes
