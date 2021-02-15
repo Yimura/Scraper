@@ -1,7 +1,7 @@
 {
   "name": "@yimura/scraper",
   "version": "1.0.0",
-  "description": "A YouTube scraper that uses minimal dependencies",
+  "description": "A YouTube scraper using zero dependencies",
   "main": "index.js",
   "scripts": {
     "test": "node test/index.js"
