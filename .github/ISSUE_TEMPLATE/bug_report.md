@@ -10,6 +10,11 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Environment**
+Node Version: ...
+NPM Version: ...
+Additional info related to your environment...
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
