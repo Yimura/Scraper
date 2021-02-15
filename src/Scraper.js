@@ -1,6 +1,6 @@
 "use strict"
 const https = require('https');
-const { BaseParams, YouTubeURL } = require('./Constants.js');
+const { SearchTypes, YouTubeURL } = require('./Constants.js');
 const Util = require('./Util.js');
 
 class Scraper {
@@ -12,87 +12,53 @@ class Scraper {
     }
 
     /**
-     * @private
-     */
-    _assign(...args) {
-        return Object.assign({}, ...args);
-    }
-
-    /**
      * @param {Object} json
      */
     _extractData(json) {
-        json = json.contents
+        json = json
+            .contents
             .twoColumnSearchResultsRenderer
-            .primaryContents
-            .sectionListRenderer
-            .contents[0]
-            .itemSectionRenderer
-            .contents;
+            .primaryContents;
 
-        const results = [];
-        json.forEach((item, i) => {
-            if (!item?.videoRenderer) return;
-
-            const vRender = item.videoRenderer;
-            const id = vRender.videoId;
-
-            const result = {
-                channel: Util.getChannelData(vRender),
-                description: Util.compress(vRender.descriptionSnippet),
-                duration: Util.parseDuration(vRender),
-                id,
-                link: Util.shareLink(id, false),
-                thumbnail: Util.idToThumbnail(id),
-                shareLink: Util.shareLink(id),
-                title: Util.compress(vRender.title),
-                uploaded: Util.getUploadDate(vRender),
-                views: Util.getViews(vRender)
-            };
-
-            results.push(result);
-        });
-
-        return results;
-    }
-
-    /**
-     * @private
-     * @param {string} webPage The YouTube webpage with search results
-     */
-    _getSearchData(webPage) {
-        const startString = 'var ytInitialData = ';
-        const start = webPage.indexOf(startString);
-        const end = webPage.indexOf(';</script>', start);
-
-        const data = webPage.substring(start + startString.length, end);
-
-        try {
-            return JSON.parse(data);
-        } catch (e) {
-            throw new Error('Failed to parse YouTube search data. YouTube might have updated their site or no results returned.');
+        let contents = [];
+            
+        if (json.sectionListRenderer) {
+            contents = json.sectionListRenderer.contents.filter((item) =>
+                item?.itemSectionRenderer?.contents.filter(x => x.videoRenderer || x.playlistRenderer)
+            ).shift().itemSectionRenderer.contents;
         }
+
+        if (json.richGridRenderer) {
+            contents = json.richGridRenderer.contents.filter((item) =>
+                item.richItemRenderer && item.richItemRenderer.content
+            ).map(item => item.richItemRenderer.content);
+        }
+
+        return contents;
     }
 
     /**
      * @private
      * @param {string} search_query
      * @param {string} [requestedLang=null]
-     * @returns {string} The entire YouTube webpage as a string
+     * @returns {Promise<string>} The entire YouTube webpage as a string
      */
-    _fetch(search_query, requestedLang = null) {
+    _fetch(search_query, searchType = 'VIDEO', requestedLang = this._lang) {
         if (requestedLang && typeof requestedLang !== 'string') {
             throw new TypeError('The request language property was not a string while a valid IANA language subtag is expected.');
-
-            return;
         }
 
-        YouTubeURL.search = new URLSearchParams(this._assign(BaseParams, { search_query }));
+        const sp = SearchTypes[searchType.toUpperCase()] || SearchTypes['VIDEO'];
+
+        YouTubeURL.search = new URLSearchParams({
+            search_query,
+            sp
+        });
 
         return new Promise((resolve, reject) => {
             https.get(YouTubeURL, {
                 headers: {
-                    'Accept-Language': requestedLang ? requestedLang : this._lang
+                    'Accept-Language': requestedLang
                 }
             }, res => {
                 res.setEncoding('utf8');
@@ -108,22 +74,56 @@ class Scraper {
     }
 
     /**
-     * @param {string} query The string to search for on youtube
+     * @private
+     * @param {string} webPage The YouTube webpage with search results
+     * @returns The search data
      */
-    async search(query, options = {}) {
-        const webPage = await this._fetch(query, options.language);
-        const parsedJson = this._getSearchData(webPage);
+    _getSearchData(webPage) {
+        const startString = 'var ytInitialData = ';
+        const start = webPage.indexOf(startString);
+        const end = webPage.indexOf(';</script>', start);
 
-        const limit = isNaN(options.limit) ? 50 : options.limit;
+        const data = webPage.substring(start + startString.length, end);
 
-        return this._extractData(parsedJson).slice(0, limit);
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            throw new Error('Failed to parse YouTube search data. YouTube might have updated their site or no results returned.');
+        }
+    }
+
+    _parseData(data) {
+        const results = {
+            playlists: [],
+            streams: [],
+            videos: []
+        };
+
+        for (const item of data) {
+            // Ordered in which they would occur the most frequently to decrease cost of these if else statements
+            if (Util.isVideo(item))
+                results.videos.push(Util.getVideoData(item));
+            else if (Util.isPlaylist(item))
+                results.playlists.push(Util.getPlaylistData(item));
+            else if (Util.isStream(item))
+                results.streams.push(Util.getStreamData(item));
+        }
+
+        return results;
     }
 
     /**
      * @param {string} query The string to search for on youtube
      */
-    async searchOne(query, options) {
-        return (await this.search(query, options))[0];
+    async search(query, options = {}) {
+        const webPage = await this._fetch(query, options.searchType, options.language);
+        
+        const parsedJson = this._getSearchData(webPage);
+
+        const extracted = this._extractData(parsedJson);
+        const parsed = this._parseData(extracted);
+
+        return parsed;
     }
 
     /**
