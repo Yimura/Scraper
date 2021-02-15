@@ -2,7 +2,7 @@
 ## Why use this package?
 
 It is a YouTube scraper with zero dependencies.
-Everything has been coded to have a minimal footprint creating a small package which is also fast.
+Everything has been coded to have a minimal footprint creating a small package which also makes very fast.
 
 ### Timings
 
@@ -11,6 +11,11 @@ These are the timings I would get on average over 20 tests, ofcourse the Fetch t
 | Fetch Time | Processing Time |
 |---|---|
 | 773.918144 ms | 3.117175 ms |
+
+```
+These are results for the VIDEO search type only, these are by far the slowest to fetch.
+Any other type will in general be over 200ms faster.
+```
 
 ## Options
 
