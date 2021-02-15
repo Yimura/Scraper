@@ -109,7 +109,7 @@ yt.search('Never gonna give you up').then(results => {
             id: String,
             link: String,
             thumbnail: String,
-            title: String:
+            title: String,
             shareLink: String
         }
     ],
