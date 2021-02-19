@@ -4,33 +4,27 @@ const Scraper = require('../index.js').default;
 const youtube = new Scraper();
 
 exports.language = () => {
-    return new Promise((resolve, reject) => {
-        youtube.search('Never gonna give you up', { language: 'fr-FR' }).then(results => {
-            resolve(results.videos[0].uploaded);
-        });
-    });
+    return youtube.search('Never gonna give you up', { language: 'fr-FR' });
 }
 
-exports.search = () => {
-    return new Promise((resolve, reject) => {
-        youtube.search('Never gonna give you up').then(results => {
-            resolve(results.videos.length);
-        });
+exports.search = (q = 'Never gonna give you up') => {
+    return youtube.search(q);
+};
+
+exports.searchChannel = (q = 'NCS') => {
+    return youtube.search(q, {
+        searchType: 'channel'
     });
 };
 
-exports.searchLive = () => {
-    return new Promise((resolve, reject) => {
-        youtube.search('NCS', {
-            searchType: 'live'
-        }).then(resolve);
+exports.searchLive = (q = 'NCS') => {
+    return youtube.search(q, {
+        searchType: 'live'
     });
 }
 
-exports.searchPlaylist = () => {
-    return new Promise((resolve, reject) => {
-        youtube.search('NCS', {
-            searchType: 'playlist'
-        }).then(resolve);
+exports.searchPlaylist = (q = 'NCS') => {
+    return youtube.search(q, {
+        searchType: 'playlist'
     });
 }
