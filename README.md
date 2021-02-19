@@ -1,4 +1,4 @@
-# YouTube Scraper v1.1.0
+# YouTube Scraper
 
 ## Table of Contents
 
