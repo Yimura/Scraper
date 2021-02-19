@@ -21,10 +21,10 @@ class Scraper {
             .primaryContents;
 
         let contents = [];
-            
+
         if (json.sectionListRenderer) {
             contents = json.sectionListRenderer.contents.filter((item) =>
-                item?.itemSectionRenderer?.contents.filter(x => x.videoRenderer || x.playlistRenderer)
+                item?.itemSectionRenderer?.contents.filter(x => x.videoRenderer || x.playlistRenderer || x.channelRenderer)
             ).shift().itemSectionRenderer.contents;
         }
 
@@ -94,6 +94,7 @@ class Scraper {
 
     _parseData(data) {
         const results = {
+            channels: [],
             playlists: [],
             streams: [],
             videos: []
@@ -107,6 +108,8 @@ class Scraper {
                 results.playlists.push(Util.getPlaylistData(item));
             else if (Util.isStream(item))
                 results.streams.push(Util.getStreamData(item));
+            else if (Util.isChannel(item))
+                results.channels.push(Util.getChannelData(item));
         }
 
         return results;
