@@ -11,7 +11,7 @@ const isChannelVerified = (vRender) => {
     const badges = (vRender['ownerBadges'] ?
         vRender['ownerBadges'].map((badge) => badge['metadataBadgeRenderer']['style']) : []
     );
-    return badges.includes('BADGE_STYLE_TYPE_VERIFIED_ARTIST');
+    return badges.includes('BADGE_STYLE_TYPE_VERIFIED') || badges.includes('BADGE_STYLE_TYPE_VERIFIED_ARTIST');
 }
 
 const getChannelData = (vRender) => {
@@ -27,6 +27,15 @@ const getChannelData = (vRender) => {
         link: 'https://www.youtube.com'+ channel['navigationEndpoint']['commandMetadata']['webCommandMetadata']['url'],
         verified: isChannelVerified(vRender)
     };
+}
+
+const getChannelLink = (cRender) => {
+    return 'https://www.youtube.com' + cRender.navigationEndpoint.browseEndpoint.canonicalBaseUrl;
+}
+
+const getChannelVideoCount = (cRender) => {
+    if (!cRender.videoCountText) return 0;
+    return +cRender.videoCountText.runs[0].text;
 }
 
 const getGeneralData = (renderer) => {
@@ -73,12 +82,12 @@ const getUploadDate = (vRender) => {
 
 const getViews = (vRender) => {
     if (!vRender.viewCountText) return 0;
-    return parseInt(vRender.viewCountText.simpleText.replace(/[^0-9]/g, ''));
+    return +vRender.viewCountText.simpleText.replace(/[^0-9]/g, '');
 }
 
 const getWatching = (vRender) => {
     if (!vRender.viewCountText?.runs) return 0;
-    return parseInt(vRender.viewCountText.runs[0].text.replace(/[^0-9]/g, ''));
+    return +vRender.viewCountText.runs[0].text.replace(/[^0-9]/g, '');
 }
 
 const idToThumbnail = function(id) {
@@ -104,13 +113,20 @@ const shareLink = (id, short = true) => {
     return short ? 'https://youtu.be/'+ id : 'https://www.youtube.com/watch?v='+ id;
 }
 
-exports.getStreamData = (item) => {
-    const vRender = item.videoRenderer;
+exports.getChannelData = (item) => {
+    const cRender = item.channelRenderer;
+    const id = cRender.channelId;
 
-    return assign({
-        watching: getWatching(vRender)
-    }, getGeneralData(vRender))
-}
+    return {
+        channelId: id,
+        description: compress(cRender.descriptionSnippet),
+        link: getChannelLink(cRender),
+        thumbnails: cRender.thumbnail.thumbnails,
+        subscribed: cRender.subscriptionButton.subscribed,
+        uploadedVideos: getChannelVideoCount(cRender),
+        verified: isChannelVerified(cRender)
+    };
+};
 
 exports.getPlaylistData = (item) => {
     const pRender = item.playlistRenderer;
@@ -126,6 +142,14 @@ exports.getPlaylistData = (item) => {
     }, getPlaylistGeneralData(pRender));
 }
 
+exports.getStreamData = (item) => {
+    const vRender = item.videoRenderer;
+
+    return assign({
+        watching: getWatching(vRender)
+    }, getGeneralData(vRender))
+}
+
 exports.getVideoData = (item) => {
     const vRender = item.videoRenderer;
 
@@ -137,6 +161,7 @@ exports.getVideoData = (item) => {
     }, getGeneralData(vRender));
 };
 
+exports.isChannel = (item) => typeof item.channelRenderer !== 'undefined';
 exports.isPlaylist = (item) => typeof item.playlistRenderer !== 'undefined';
 exports.isStream = (item) => item.videoRenderer && !item.videoRenderer.lengthText;
 exports.isVideo = (item) => item.videoRenderer && item.videoRenderer.lengthText;
