@@ -1,30 +1,44 @@
-# YouTube Scraper
+# YouTube Scraper v1.1.0
+
+## Table of Contents
+
+ * [Why use this package](#why-use-this-package)
+    - [Timings](#timings)
+ * [Options](#options)
+    - [Example Options](#example-options)
+ * [Example Code](#example-code)
+    * [Output](#output)
+ * [Return Object Structure](#return-object-structure)
+
 ## Why use this package?
 
-It is a YouTube scraper with zero dependencies.
-Everything has been coded to have a minimal footprint creating a small package which also makes very fast.
+This is a YouTube scraper with zero dependencies.
+Everything has been coded to have a minimal footprint creating a small package that's aimed at being as fast as possible.
 
 ### Timings
 
 These are the timings I would get on average over 20 tests, ofcourse the Fetch time depends on how good your connection is to YouTube and how loaded YouTube is at that point.
 
-| Fetch Time | Processing Time |
-|---|---|
-| 773.918144 ms | 3.117175 ms |
+| Type | Fetch Time | Processing Time |
+|---|---|---|
+| `video` | 585.632055 ms | 3.117175 ms |
+| `channel` | 494.026065 ms | `not tested` |
+| `playlist` | 569.424545 ms | `not tested` |
 
-```
-These are results for the VIDEO search type only, these are by far the slowest to fetch.
-Any other type will in general be over 200ms faster.
-```
+[Check here](https://prnt.sc/1018ttl)
 
 ## Options
 
 | Property | Default | Description |
 |---|---|---|
 | language | `en` | Set the language that you would like for results to be returned in. A list of supported language types can be found [here](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry). |
-| searchType | `video` | Which type to search for on YouTube, supported types are `any`,`live`, `movie`, `playlist` and `video` |
+| searchType | `video` | Which type to search for on YouTube, supported types are `any`, `channel`, `live`, `movie`, `playlist` and `video` |
+```
+"Sort by" has not been implemented as of now.
+All data is sorted in the default order that YouTube returns these in.
+```
 
-### Example
+### Example Options
 You can set the global language which YouTube should return results in or set the return language per search/request:
 ```js
 import youtube from '@yimura/scraper'
@@ -33,7 +47,10 @@ import youtube from '@yimura/scraper'
 const yt = new youtube.default('fr-FR');
 
 // Sets the language communicated to YouTube to Dutch from Belgium for this search
-const results = yt.search('Never gonna give you up', { language: 'nl-BE' });
+const results = yt.search('Never gonna give you up', {
+    language: 'nl-BE',
+    searchType: 'video' // video is the default search type
+});
 ```
 
 ## Example Code
@@ -59,7 +76,7 @@ yt.search('Never gonna give you up').then(results => {
 });
 ```
 
-## Example Result
+### Output
 
 ```js
 {
@@ -83,6 +100,23 @@ yt.search('Never gonna give you up').then(results => {
 ## Return Object Structure
 ```js
 {
+    channels: [
+        {
+            channelId: String,
+            description: String,
+            link: String,
+            thumbnails: [
+                {
+                    url: String,
+                    width: Number,
+                    height: Number
+                }
+            ],
+            subscribed: Boolean,
+            uploadedVideos: Number,
+            verified: Boolean
+        }
+    ],
     playlists: [
         {
             preview: [
