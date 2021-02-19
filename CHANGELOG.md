@@ -9,6 +9,14 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2021-02-19, Version 1.1.0, @Yimura
+
+### Changes
+
+ * Fixed an issue with verified channel states where it would only check for verified artist but not verified channel.
+ * Added support for channel search.
+ * Fixed typo's in README
+
 ## 2021-02-15, Version 1.0.0, @Yimura
 
 ### Changes
