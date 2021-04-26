@@ -7,11 +7,6 @@ export interface SearchTypes {
   VIDEO: "EgIQAQ%3D%3D";
 }
 
-const Constants = {
-  SearchTypes,
-  YoutubeURL: URL.prototype,
-}
-
 export interface Thumbnail {
   url: string;
   width: number;
@@ -79,16 +74,22 @@ export interface SearchOptions {
   language?: string;
 }
 
-class Scraper {
+declare class Scraper {
   private _lang: string;
 
   public constructor(language?: string);
 
-  private _extractData(json: Record<string, unknown>): Record<string, unknown>[];
-  private _fetch(search_query: string, searchType?: keyof SearchTypes, requestedLang?: string): Promise<string>;
+  private _extractData(
+    json: Record<string, unknown>
+  ): Record<string, unknown>[];
+  private _fetch(
+    search_query: string,
+    searchType?: keyof SearchTypes,
+    requestedLang?: string
+  ): Promise<string>;
   private _getSearchData(webPage: string): Record<string, unknown>;
   private _parseData(data: Record<string, unknown>[]): Results;
 
-  public async search(query: string, options?: SearchOptions): Promise<Results>;
+  public search(query: string, options?: SearchOptions): Promise<Results>;
   public setLang(language?: string): void;
 }
