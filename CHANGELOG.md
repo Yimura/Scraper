@@ -9,6 +9,12 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2021-03-25, Version 1.2.1, @omarkhatibco
+
+### Changes
+
+ * fixed TypeScript annotations, thanks @omarkhatibco
+
 ## 2021-03-25, Version 1.2.0, @Lioness100
 
 ### Changes
