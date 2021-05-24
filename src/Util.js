@@ -91,7 +91,7 @@ const getWatching = (vRender) => {
 }
 
 const idToThumbnail = function(id) {
-    return 'https://i.ytimg.com/vi/'+ id +'/hqdefault.jpg';
+    return 'https://i.ytimg.com/vi/'+ id +'/maxresdefault.jpg';
 }
 
 const parseDuration = (vRender) => {
