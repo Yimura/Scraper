@@ -9,6 +9,10 @@ Following:
 * **minor** used whenever a single file was rewritten or significant change happened
 * **patch** may only be bumped after a bug was resolved as whole
 
+## 2021-05-25, Version 1.2.2, @GeopJr
+
+ * fix(idToThumbnail): always use maxres, thanks @GeopJr
+
 ## 2021-03-25, Version 1.2.1, @omarkhatibco
 
 ### Changes
