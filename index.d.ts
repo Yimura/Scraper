@@ -26,6 +26,7 @@ export interface ShareableGeneralData extends GeneralData {
 
 export interface VideoPreview extends ShareableGeneralData {
   duration: number;
+  duration_raw: string;
   views: number;
 }
 
@@ -38,6 +39,7 @@ export interface ChannelPreview {
 export interface Video extends ShareableGeneralData {
   description: string;
   duration: number;
+  duration_raw: string;
   uploaded: string;
   views: number;
   channel: ChannelPreview;
@@ -45,6 +47,8 @@ export interface Video extends ShareableGeneralData {
 
 export interface Playlist extends GeneralData {
   preview: VideoPreview[];
+  duration: number;
+  duration_raw: string;
 }
 
 export interface Stream extends ShareableGeneralData {

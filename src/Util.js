@@ -68,6 +68,7 @@ const getPlaylistThumbnail = (pRender) => {
 const getPlaylistVideoData = (renderer) => {
     return {
         duration: parseDuration(renderer),
+        duration_raw: renderer.lengthText ? renderer.lengthText.simpleText : '00:00:00',
         id: renderer.videoId,
         link: shareLink(renderer.videoId, false),
         thumbnail: idToThumbnail(renderer.videoId),
@@ -98,15 +99,9 @@ const parseDuration = (vRender) => {
     if (!vRender.lengthText) return 0;
 
     const nums = vRender.lengthText.simpleText.split(':');
-    let sum = 0;
-    let multi = 1;
+    let time = nums.reduce((a, t) => (60 * a) + +t) * 1e3;
 
-    while (nums.length > 0) {
-        sum += multi * parseInt(nums.pop() || '-1', 10);
-        multi *= 60;
-    }
-
-    return sum;
+    return time;
 }
 
 const shareLink = (id, short = true) => {
@@ -156,6 +151,7 @@ exports.getVideoData = (item) => {
     return assign({
         description: compress(vRender.descriptionSnippet),
         duration: parseDuration(vRender),
+        duration_raw: vRender.lengthText ? vRender.lengthText.simpleText : '00:00:00',
         uploaded: getUploadDate(vRender),
         views: getViews(vRender)
     }, getGeneralData(vRender));
