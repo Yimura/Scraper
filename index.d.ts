@@ -25,7 +25,7 @@ export interface ShareableGeneralData extends GeneralData {
 }
 
 export interface VideoPreview extends ShareableGeneralData {
-  duration: number;
+  duration: string;
   views: number;
 }
 
@@ -37,7 +37,7 @@ export interface ChannelPreview {
 
 export interface Video extends ShareableGeneralData {
   description: string;
-  duration: number;
+  duration: string;
   uploaded: string;
   views: number;
   channel: ChannelPreview;
