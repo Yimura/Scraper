@@ -99,7 +99,7 @@ const parseDuration = (vRender) => {
     if (!vRender.lengthText) return 0;
 
     const nums = vRender.lengthText.simpleText.split(':');
-    let time = nums.split(':').reduce((a, t) => (60 * a) + +t) * 1e3;
+    let time = nums.reduce((a, t) => (60 * a) + +t) * 1e3;
 
     return time;
 }
