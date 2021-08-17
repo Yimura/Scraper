@@ -68,7 +68,7 @@ const getPlaylistThumbnail = (pRender) => {
 const getPlaylistVideoData = (renderer) => {
     return {
         duration: parseDuration(renderer),
-        duration_raw: renderer.lengthText ? renderer.lengthText.simpleText : '00:00:00'
+        duration_raw: renderer.lengthText ? renderer.lengthText.simpleText : '00:00:00',
         id: renderer.videoId,
         link: shareLink(renderer.videoId, false),
         thumbnail: idToThumbnail(renderer.videoId),
@@ -151,7 +151,7 @@ exports.getVideoData = (item) => {
     return assign({
         description: compress(vRender.descriptionSnippet),
         duration: parseDuration(vRender),
-        duration_raw: vRender.lengthText ? vRender.lengthText.simpleText : '00:00:00'
+        duration_raw: vRender.lengthText ? vRender.lengthText.simpleText : '00:00:00',
         uploaded: getUploadDate(vRender),
         views: getViews(vRender)
     }, getGeneralData(vRender));
