@@ -95,18 +95,8 @@ const idToThumbnail = function(id) {
 }
 
 const parseDuration = (vRender) => {
-    if (!vRender.lengthText) return 0;
-
-    const nums = vRender.lengthText.simpleText.split(':');
-    let sum = 0;
-    let multi = 1;
-
-    while (nums.length > 0) {
-        sum += multi * parseInt(nums.pop() || '-1', 10);
-        multi *= 60;
-    }
-
-    return sum;
+    if (!vRender.lengthText || !vRender.lengthText.simpleText) return '00:00:00';
+    return vRender.lengthText.simpleText
 }
 
 const shareLink = (id, short = true) => {
