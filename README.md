@@ -87,7 +87,7 @@ yt.search('Never gonna give you up').then(results => {
     },
     description: "Rick Astley's official music video for “Never Gonna Give You Up” Listen to Rick Astley: https://RickAstley.lnk.to/_listenYD Subscribe ...",
     duration: 213,
-	duration_raw: "3:33",
+    duration_raw: "3:33",
     id: 'dQw4w9WgXcQ',
     link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQhqdefault.jpg',
@@ -123,7 +123,7 @@ yt.search('Never gonna give you up').then(results => {
             preview: [
                 {
                     duration: Number,
-					duration_raw: String,
+                    duration_raw: String,
                     views: Number,
                     id: String,
                     link: String,
@@ -158,7 +158,7 @@ yt.search('Never gonna give you up').then(results => {
         {
             description: String,
             duration: Number,
-			duration_raw: String,
+            duration_raw: String,
             uploaded: String,
             views: Number,
             channel: {
