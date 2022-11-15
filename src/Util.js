@@ -34,7 +34,7 @@ const getChannelLink = (cRender) => {
 }
 
 const getChannelVideoCount = (cRender) => {
-    if (!cRender.videoCountText) return 0;
+    if (!cRender.videoCountText?.runs) return 0;
     return +cRender.videoCountText.runs[0].text;
 }
 
