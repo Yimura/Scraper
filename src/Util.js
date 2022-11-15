@@ -34,7 +34,7 @@ const getChannelLink = (cRender) => {
 }
 
 const getChannelVideoCount = (cRender) => {
-    if (!cRender.videoCountText) return 0;
+    if (!cRender.videoCountText?.runs) return 0;
     return +cRender.videoCountText.runs[0].text;
 }
 
@@ -82,7 +82,7 @@ const getUploadDate = (vRender) => {
 }
 
 const getViews = (vRender) => {
-    if (!vRender.viewCountText) return 0;
+    if (!vRender.viewCountText?.simpleText) return 0;
     return +vRender.viewCountText.simpleText.replace(/[^0-9]/g, '');
 }
 
@@ -96,7 +96,7 @@ const idToThumbnail = function(id) {
 }
 
 const parseDuration = (vRender) => {
-    if (!vRender.lengthText) return 0;
+    if (!vRender.lengthText?.simpleText) return 0;
 
     const nums = vRender.lengthText.simpleText.split(':');
     let time = nums.reduce((a, t) => (60 * a) + +t) * 1e3;
